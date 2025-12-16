@@ -1,21 +1,10 @@
 #!/usr/bin/env python
 import sys
-import os
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from markdown_validator.crew import MarkDownValidatorCrew
 
 # Load environment variables from .env file
 load_dotenv()
-
-# Initialize the OpenAI LLM
-default_llm = ChatOpenAI(
-    openai_api_base=os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1"),
-    openai_api_key=os.environ.get("OPENAI_API_KEY"),
-    temperature=0.1,
-    model_name=os.environ.get("MODEL_NAME", "gpt-4o-mini"),
-    top_p=0.3
-)
 
 
 def run():

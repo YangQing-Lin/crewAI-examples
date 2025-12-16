@@ -1,5 +1,5 @@
 import os
-from langchain.tools import tool
+from crewai.tools import tool
 from pymarkdown.api import PyMarkdownApi, PyMarkdownApiException
 
 
