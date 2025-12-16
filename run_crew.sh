@@ -3,6 +3,11 @@
 # 用法: ./run_crew.sh <crew_name> [args...]
 # 示例: ./run_crew.sh markdown_validator README.md
 
+# 加载 .env 文件
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
 CREW_NAME=$1
 shift
 ARGS="$@"
