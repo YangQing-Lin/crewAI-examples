@@ -15,12 +15,12 @@ llm = LLM(
 @CrewBase
 class MarkDownValidatorCrew():
     """MarkDownValidatorCrew crew"""
-    agents_config = 'config/agents.yaml'
-    tasks_config = 'config/tasks.yaml'
+    agents_config: dict = 'config/agents.yaml'  # type: ignore[assignment]
+    tasks_config: dict = 'config/tasks.yaml'  # type: ignore[assignment]
 
     @agent
     def RequirementsManager(self) -> Agent:
-        return Agent(
+        return Agent(  # type: ignore[call-arg]
             config=self.agents_config['Requirements_Manager'],
             tools=[markdown_validation_tool],
             allow_delegation=False,
@@ -31,16 +31,16 @@ class MarkDownValidatorCrew():
     @task
     def syntax_review_task(self) -> Task:
         return Task(
-            config=self.tasks_config['syntax_review_task'],
-            agent=self.RequirementsManager()
+            config=self.tasks_config['syntax_review_task'],  # type: ignore[arg-type]
+            agent=self.RequirementsManager(),  # type: ignore[call-arg]
         )
 
     @crew
     def crew(self) -> Crew:
         """Creates the MarkDownValidatorCrew crew"""
         return Crew(
-            agents=self.agents,
-            tasks=self.tasks,
+            agents=self.agents,  # type: ignore[attr-defined]
+            tasks=self.tasks,  # type: ignore[attr-defined]
             process=Process.sequential,
             verbose=False,
         )

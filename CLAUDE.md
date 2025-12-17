@@ -17,23 +17,56 @@ uv run markdown_validator  # 运行
 uv run train <n_iterations> # 训练
 ```
 
+### 虚拟环境（uv 特性）
+
+**重要：uv 创建的虚拟环境与传统 venv 不同！**
+
+- `.venv/bin/` 中**没有 pip**，只有 python 符号链接
+- 安装包必须用 `uv pip install`，不能用 `.venv/bin/pip`
+- 每个子项目（如 `crews/markdown_validator/`）有独立的 `.venv`
+- 类型检查、lint 等工具需要从**子项目目录**运行，以正确解析依赖
+
+```bash
+# ❌ 错误用法
+.venv/bin/pip install pyright          # uv 虚拟环境没有 pip
+pyright src/                           # 找不到项目依赖
+
+# ✅ 正确用法
+uv pip install pyright                 # 用 uv 安装包
+cd crews/markdown_validator && uv run pyright src/  # 从子项目目录运行
+```
+
 ### 常用命令
 
 ```bash
-# 安装依赖
+# 安装依赖（在子项目目录执行）
+cd crews/markdown_validator
 uv sync
 
-# 运行示例（使用 pyproject.toml 中定义的脚本）
-uv run <script_name>
+# 运行示例
+uv run markdown_validator
 
-# 直接运行 Python 文件
-uv run python src/<project>/main.py
+# 安装开发工具
+uv pip install pyright ruff
 
-# 类型检查
+# 类型检查（必须从子项目目录运行）
 uv run pyright src/
 
 # Lint 检查
 uv run ruff check src/
+
+# 直接运行 Python 文件
+uv run python src/<project>/main.py
+```
+
+### 代理设置
+
+网络受限时，设置代理加速下载：
+
+```bash
+export HTTP_PROXY=http://192.168.2.52:7897
+export HTTPS_PROXY=http://192.168.2.52:7897
+uv pip install <package>
 ```
 
 ## Architecture
