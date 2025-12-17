@@ -139,3 +139,104 @@
 - **[CrewAI Cookbooks](https://github.com/crewAIInc/crewAI-cookbook)** - 功能专项教程和指南
 - **[CrewAI 文档](https://docs.crewai.com)** - 完整文档
 - **[CrewAI 社区](https://community.crewai.com)** - 加入社区讨论
+
+## 使用 uv 管理环境（推荐）
+
+[uv](https://github.com/astral-sh/uv) 是新一代 Python 包管理器，比 pip 快 10-100 倍，可完全替代 conda + pip 组合。
+
+### 安装 uv
+
+```bash
+# Linux / macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 或使用 pip
+pip install uv
+```
+
+### 配置代理加速（可选）
+
+如果你有代理服务器，可配置环境变量加速 GitHub 和 PyPI 访问：
+
+```bash
+# 临时使用（当前终端生效）
+export HTTP_PROXY=http://192.168.2.52:7897
+export HTTPS_PROXY=http://192.168.2.52:7897
+
+# 永久配置（写入 shell 配置文件）
+echo 'export HTTP_PROXY=http://192.168.2.52:7897' >> ~/.bashrc
+echo 'export HTTPS_PROXY=http://192.168.2.52:7897' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### 配置 PyPI 镜像源（可选）
+
+国内用户可配置镜像源加速包下载：
+
+```bash
+# 临时使用
+uv pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
+
+# 永久配置（环境变量）
+export UV_INDEX_URL=https://mirrors.aliyun.com/pypi/simple
+
+# 或全局配置文件 ~/.config/uv/uv.toml
+# index-url = "https://mirrors.aliyun.com/pypi/simple"
+```
+
+常用镜像源：
+- 阿里云：`https://mirrors.aliyun.com/pypi/simple`
+- 清华：`https://pypi.tuna.tsinghua.edu.cn/simple`
+- 腾讯：`https://mirrors.cloud.tencent.com/pypi/simple`
+
+### 快速开始 crewAI-examples
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/crewAIInc/crewAI-examples.git
+cd crewAI-examples
+
+# 2. 安装 Python 3.11（如系统未安装）
+uv python install 3.11
+
+# 3. 创建虚拟环境
+uv venv --python 3.11
+
+# 4. 激活环境
+source .venv/bin/activate  # Linux/macOS
+# .venv\Scripts\activate   # Windows
+
+# 5. 安装依赖
+uv pip install -r requirements.txt
+
+# 6. 运行示例
+cd crews/marketing_strategy
+uv pip install -r requirements.txt  # 如有额外依赖
+python src/marketing_strategy/main.py
+```
+
+### 单个示例项目的标准流程
+
+```bash
+# 进入示例目录
+cd crews/marketing_strategy
+
+# 使用 uv sync 自动创建环境并安装依赖
+uv sync
+
+# 运行
+uv run run_crew
+```
+
+### uv 常用命令速查
+
+| 命令 | 说明 |
+|------|------|
+| `uv python install 3.11` | 安装 Python 3.11 |
+| `uv python list` | 列出已安装的 Python 版本 |
+| `uv venv` | 创建虚拟环境 |
+| `uv pip install pkg` | 安装包 |
+| `uv pip install -r req.txt` | 从 requirements.txt 安装 |
+| `uv add pkg` | 添加依赖到 pyproject.toml |
+| `uv sync` | 同步 pyproject.toml 依赖 |
+| `uv run cmd` | 在虚拟环境中运行命令 |
