@@ -6,83 +6,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is the official CrewAI examples repository containing complete end-to-end applications demonstrating AI agent orchestration. All examples use **CrewAI 0.152.0** and **UV package manager**.
 
-## macOS 环境配置
-
-### Conda 安装路径
-
-macOS (Apple Silicon) 下 conda 安装位置：
-```
-/opt/homebrew/anaconda3
-```
-
-如果 shell 中 `conda` 命令不可用，使用完整路径：
-```bash
-/opt/homebrew/anaconda3/bin/conda <command>
-```
-
-### 环境初始化
-
-首次使用需创建 conda 环境：
-```bash
-# 创建环境（Python 3.11）
-/opt/homebrew/anaconda3/bin/conda create -n crew-ai python=3.11 -y
-
-# 安装依赖
-/opt/homebrew/anaconda3/bin/conda run -n crew-ai pip install crewai crewai-tools
-```
-
-### Conda 环境
-
-本项目使用 conda 环境 `crew-ai` 管理依赖：
-
-```bash
-# 环境位置：/opt/homebrew/anaconda3/envs/crew-ai
-# 包含 crewai 1.7.1 + crewai-tools
-# 所有命令通过 conda run 执行，无需手动 activate
-
-# 验证安装
-conda run -n crew-ai python -c "import crewai; print(crewai.__version__)"
-
-# 或使用完整路径
-/opt/homebrew/anaconda3/bin/conda run -n crew-ai python -c "import crewai; print(crewai.__version__)"
-```
-
 ## 运行示例
 
-### 方式一：conda run（推荐）
-
-无需手动 activate 环境，直接执行：
-```bash
-# 运行 crews 目录下的示例
-conda run -n crew-ai python crews/marketing_strategy/src/marketing_strategy/main.py
-
-# 运行 flows 目录下的示例
-conda run -n crew-ai python flows/self_evaluation_loop_flow/src/self_evaluation_loop_flow/main.py
-
-# 使用完整 conda 路径（shell 未初始化时）
-/opt/homebrew/anaconda3/bin/conda run -n crew-ai python <script_path>
-```
-
-### 方式二：激活环境后运行
+本项目统一使用 uv 管理依赖，进入具体示例目录后执行：
 
 ```bash
-# 激活环境
-conda activate crew-ai
-
-# 运行示例
-python crews/marketing_strategy/src/marketing_strategy/main.py
-
-# 退出环境
-conda deactivate
-```
-
-### 方式三：uv（进入具体示例目录）
-
-```bash
-cd crews/marketing_strategy
+cd crews/markdown_validator
 uv sync                    # 安装依赖
-uv run run_crew            # 运行
+uv run markdown_validator  # 运行
 uv run train <n_iterations> # 训练
+```
+
+### 常用命令
+
+```bash
+# 安装依赖
+uv sync
+
+# 运行示例（使用 pyproject.toml 中定义的脚本）
+uv run <script_name>
+
+# 直接运行 Python 文件
+uv run python src/<project>/main.py
+
+# 类型检查
+uv run pyright src/
+
+# Lint 检查
+uv run ruff check src/
 ```
 
 ## Architecture
